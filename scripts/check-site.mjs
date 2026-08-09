@@ -123,10 +123,17 @@ if (!existsSync(searchIndex)) {
     const entries = JSON.parse(readFileSync(searchIndex, 'utf8'));
     if (!Array.isArray(entries)) throw new Error('top-level value must be an array');
     entries.forEach((entry, index) => {
-      if (!entry || typeof entry.title !== 'string' || typeof entry.url !== 'string') {
-        throw new Error(`entry ${index} must include string title and url fields`);
+      if (!entry || typeof entry.title !== 'string' || typeof entry.url !== 'string' || typeof entry.kind !== 'string') {
+        throw new Error(`entry ${index} must include string title, url, and kind fields`);
       }
     });
+    const publicProjectPages = htmlFiles.filter((file) => {
+      const path = relative(outputDirectory, file).split(sep).join('/');
+      return path.startsWith('projects/') && path !== 'projects/index.html';
+    });
+    if (publicProjectPages.length && !entries.some((entry) => entry.kind === '项目' && entry.url.startsWith('/projects/'))) {
+      throw new Error('public project pages must be included in the search index');
+    }
   } catch (error) {
     fail(searchIndex, `invalid search index: ${error.message}`);
   }

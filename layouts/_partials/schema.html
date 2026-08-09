@@ -9,6 +9,9 @@
   "url" site.Home.Permalink
   "description" site.Params.description
 -}}
+{{- with site.Params.social.github -}}
+  {{- $person = merge $person (dict "sameAs" (slice .)) -}}
+{{- end -}}
 {{- $website := dict
   "@type" "WebSite"
   "@id" $websiteID

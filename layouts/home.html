@@ -9,20 +9,20 @@
       <p class="hero-description">{{ site.Params.description }}</p>
       <div class="hero-links">
         <a class="text-action light" href="{{ "posts/" | relURL }}">阅读文章 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
-        <a class="text-action quiet-light" href="{{ "about/" | relURL }}">了解更多</a>
+        <a class="text-action quiet-light" href="{{ "projects/" | relURL }}">浏览项目</a>
       </div>
     </div>
     <div class="hero-readout shell" aria-hidden="true">
-      <span>THERMAL · TEMPORAL · VISION</span>
-      <span>FIELD NOTES</span>
+      <span>NOTES · PROJECTS · LEARNING</span>
+      <span>PERSONAL SPACE</span>
     </div>
   </section>
 
   <section class="intro-band">
     <div class="shell intro-grid">
-      <p class="section-kicker">研究坐标</p>
-      <p class="intro-statement">把模型放回真实场景，用可复现的证据回答问题。</p>
-      <p class="intro-side">关注复杂环境中的视觉感知，也记录让研究更清晰、更可靠的工程方法。</p>
+      <p class="section-kicker">写作与实践</p>
+      <p class="intro-statement">把做过的事、正在思考的问题和还没有答案的想法，留成可回看的记录。</p>
+      <p class="intro-side">这里既放完整的技术总结，也保留项目过程与短小的日常观察。</p>
     </div>
   </section>
 
@@ -42,14 +42,49 @@
     </div>
   </section>
 
+  {{ $projects := where site.RegularPages "Section" "projects" }}
+  <section class="projects-preview" aria-labelledby="projects-preview-title">
+    <div class="shell">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">近期项目</p>
+          <h2 id="projects-preview-title">正在构建</h2>
+        </div>
+        <a class="text-action" href="{{ "projects/" | relURL }}">全部项目 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+      </div>
+      <div class="project-preview-list">
+        {{ range $index, $project := first 2 $projects.ByWeight }}
+          <article class="project-preview">
+            <div class="project-preview-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</div>
+            <div class="project-preview-main">
+              <div class="project-row-meta">
+                <span class="project-status project-status-{{ $project.Params.status | default "unknown" }}">
+                  <span aria-hidden="true"></span>{{ $project.Params.statusLabel | default "状态待更新" }}
+                </span>
+                {{ with $project.Params.phase }}<span>{{ . }}</span>{{ end }}
+              </div>
+              <h3><a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a></h3>
+              {{ with $project.Description }}<p>{{ . }}</p>{{ end }}
+            </div>
+            <a class="project-preview-link" href="{{ $project.RelPermalink }}" aria-label="查看项目《{{ $project.LinkTitle }}》">
+              <span>查看项目</span>{{ partial "icon.html" (dict "name" "arrow-right") }}
+            </a>
+          </article>
+        {{ else }}
+          <p class="project-empty">项目整理中。</p>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
   <section class="focus-section">
     <div class="shell">
       <div class="section-heading focus-heading">
         <div>
           <p class="section-kicker">当前关注</p>
-          <h2>研究方向</h2>
+          <h2>探索中的方向</h2>
         </div>
-        <p>持续收窄问题，也保持对相邻领域的好奇。</p>
+        <p>从正在做的事出发，也为新问题和相邻领域留出空间。</p>
       </div>
       <div class="focus-grid">
         {{ range site.Params.focus }}
@@ -64,8 +99,8 @@
   </section>
 
   <section class="closing-band shell">
-    <p class="section-kicker">研究手记</p>
-    <p>保留推理过程，也保留尚未解决的问题。</p>
+    <p class="section-kicker">个人笔记</p>
+    <p>持续把经验、问题和未完成的想法写下来。</p>
     <a class="text-action" href="{{ "archives/" | relURL }}">浏览归档 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
   </section>
 {{ end }}

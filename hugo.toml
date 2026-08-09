@@ -2,7 +2,7 @@
 baseURL = 'https://ywzzq.github.io/'
 locale = 'zh-CN'
 defaultContentLanguage = 'zh-cn'
-title = 'YWzzq · 研究手记'
+title = 'YWzzq · 笔记与项目'
 timeZone = 'Asia/Shanghai'
 hasCJKLanguage = true
 enableRobotsTXT = true
@@ -27,31 +27,30 @@ summaryLength = 96
 [params]
   displayName = 'YWzzq'
   monogram = 'YW.'
-  role = '计算机视觉研究者'
-  description = '关注热红外成像、场景理解与可复现研究。这里记录论文阅读、实验复盘和工程实践。'
-  heroNote = 'Computer Vision · Thermal Imaging · Reproducible Research'
-  location = 'China'
-  footerNote = '在像素、时序与真实世界之间持续观察。'
+  role = '记录想法与实践'
+  description = '这里整理阅读、项目、研究与技术实践中的问题、过程和复盘。'
+  heroNote = 'Notes · Projects · Research · Technology'
+  footerNote = '保留过程，也保留仍在形成中的想法。'
   mainSections = ['posts']
 
   [params.social]
-    github = ''
+    github = 'https://github.com/YWzzq'
     email = ''
 
   [[params.focus]]
     number = '01'
-    title = '热红外视觉'
-    description = '复杂光照与长时序场景中的稳健感知。'
+    title = '问题与想法'
+    description = '从具体问题出发，记录推理、取舍与尚未解决的部分。'
 
   [[params.focus]]
     number = '02'
-    title = '场景理解'
-    description = '从像素级表征到可解释的空间推理。'
+    title = '项目与实践'
+    description = '把阅读、研究和技术实践中的过程整理成可回看的记录。'
 
   [[params.focus]]
     number = '03'
-    title = '研究工程'
-    description = '可追踪、可比较、可复现的实验工作流。'
+    title = '持续学习'
+    description = '关注工具、方法与相邻领域，并通过写作沉淀新的理解。'
 
 [[menus.main]]
   name = '文章'

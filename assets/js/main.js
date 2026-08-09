@@ -115,9 +115,16 @@
 
     const meta = document.createElement('div');
     meta.className = 'search-result-meta';
-    const date = document.createElement('span');
-    date.textContent = item.date || '';
-    meta.append(date);
+    if (item.kind) {
+      const kind = document.createElement('span');
+      kind.textContent = item.kind;
+      meta.append(kind);
+    }
+    if (item.date) {
+      const date = document.createElement('span');
+      date.textContent = item.date;
+      meta.append(date);
+    }
     if (Array.isArray(item.tags) && item.tags.length) {
       const tags = document.createElement('span');
       tags.textContent = item.tags.slice(0, 3).map((tag) => `#${tag}`).join('  ');
@@ -150,16 +157,16 @@
         if (currentRequest !== requestNumber) return;
         const tokens = normalize(query).split(/\s+/).filter(Boolean);
         const allMatches = items.filter((item) => {
-          const haystack = normalize([item.title, item.summary, item.content, ...(item.tags || [])].join(' '));
+          const haystack = normalize([item.title, item.summary, item.content, item.kind, ...(item.tags || [])].join(' '));
           return tokens.every((token) => haystack.includes(token));
         });
         const matches = allMatches.slice(0, 12);
 
         matches.forEach((item) => results.append(createResult(item)));
         if (allMatches.length > matches.length) {
-          status.textContent = `共找到 ${allMatches.length} 篇，显示前 ${matches.length} 篇`;
+          status.textContent = `共找到 ${allMatches.length} 条，显示前 ${matches.length} 条`;
         } else {
-          status.textContent = matches.length ? `找到 ${matches.length} 篇相关记录` : '没有找到相关记录';
+          status.textContent = matches.length ? `找到 ${matches.length} 条相关记录` : '没有找到相关记录';
         }
       } catch (_) {
         status.textContent = '搜索索引暂时不可用';

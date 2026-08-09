@@ -1,6 +1,6 @@
-# YWzzq · 研究手记
+# YWzzq · 笔记与项目
 
-一个无外部主题依赖的中文 Hugo 个人博客，包含响应式首页、文章、归档、标签、全文搜索、RSS、深浅色主题和 GitHub Pages 自动部署。
+一个无外部主题依赖的中文 Hugo 个人博客，用于整理文章、项目与阶段性想法，包含响应式首页、归档、标签、全文搜索、RSS、深浅色主题和 GitHub Pages 自动部署。
 
 ## 本地预览
 
@@ -25,13 +25,13 @@ node scripts/check-site.mjs public
 主要信息集中在 `hugo.toml`：
 
 - `params.displayName`：显示名称
-- `params.role`：身份简介
+- `params.role`：首页简短定位
 - `params.description`：首页介绍
 - `params.social.github`：GitHub 主页
 - `params.social.email`：联系邮箱
-- `params.focus`：研究方向
+- `params.focus`：当前关注的话题
 
-文章位于 `content/posts/`。新建文章：
+文章位于 `content/posts/`，项目内容位于 `content/projects/`。新建文章：
 
 ```bash
 hugo new content posts/my-new-post.md

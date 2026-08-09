@@ -38,7 +38,7 @@
     <div class="project-content shell">
       {{ with .Params.scope }}
         <aside class="project-scope" aria-labelledby="project-scope-title">
-          <p class="section-kicker" id="project-scope-title">研究范围</p>
+          <p class="section-kicker" id="project-scope-title">项目范围</p>
           <ol>
             {{ range $index, $item := . }}
               <li><span aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>{{ $item }}</li>

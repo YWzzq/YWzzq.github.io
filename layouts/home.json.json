@@ -1,13 +1,15 @@
 {{- $items := slice -}}
-{{- range where site.RegularPages "Section" "posts" -}}
-  {{- if not .Params.searchExclude -}}
+{{- range site.RegularPages -}}
+  {{- if and (in (slice "posts" "projects") .Section) (not .Params.searchExclude) -}}
+    {{- $kind := cond (eq .Section "posts") "文章" "项目" -}}
     {{- $items = $items | append (dict
       "title" .LinkTitle
       "url" .RelPermalink
-      "date" (.Date.Format "2006-01-02")
+      "date" (cond (eq .Section "posts") (.Date.Format "2006-01-02") "")
       "summary" (.Description | default (.Summary | plainify))
       "content" (.Plain | htmlUnescape)
       "tags" (.Params.tags | default (slice))
+      "kind" $kind
     ) -}}
   {{- end -}}
 {{- end -}}

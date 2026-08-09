@@ -1,11 +1,11 @@
 {{ define "main" }}
   <header class="page-heading projects-heading shell">
-    <p class="section-kicker">Research Projects</p>
+    <p class="section-kicker">Projects</p>
     <h1>{{ .Title }}</h1>
     {{ with .Description }}<p>{{ . }}</p>{{ end }}
   </header>
 
-  <section class="project-index shell" aria-label="研究项目列表">
+  <section class="project-index shell" aria-label="项目列表">
     <div class="project-list">
       {{ range $index, $project := .RegularPages.ByWeight }}
         <article class="project-row">
@@ -20,7 +20,7 @@
             <h2><a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a></h2>
             {{ with $project.Description }}<p>{{ . }}</p>{{ end }}
             {{ with $project.Params.areas }}
-              <ul class="project-area-list" aria-label="研究方向">
+              <ul class="project-area-list" aria-label="项目主题">
                 {{ range . }}<li>{{ . }}</li>{{ end }}
               </ul>
             {{ end }}
@@ -30,7 +30,7 @@
           </a>
         </article>
       {{ else }}
-        <p class="project-empty">公开项目整理中。</p>
+        <p class="project-empty">项目整理中。</p>
       {{ end }}
     </div>
   </section>
