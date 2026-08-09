@@ -1,0 +1,14 @@
+{{ define "main" }}
+  <header class="page-heading shell">
+    <p class="section-kicker">标签</p>
+    <h1>{{ .Title }}</h1>
+    <p>共 {{ len .RegularPages }} 篇记录。</p>
+  </header>
+  <section class="listing-section shell">
+    <div class="article-list">
+      {{ range $index, $page := .RegularPages.ByDate.Reverse }}
+        {{ partial "article-row.html" (dict "page" $page "index" (add $index 1) "level" 2) }}
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

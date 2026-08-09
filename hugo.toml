@@ -1,0 +1,89 @@
+# GitHub Actions also confirms this URL during deployment.
+baseURL = 'https://ywzzq.github.io/'
+locale = 'zh-CN'
+defaultContentLanguage = 'zh-cn'
+title = 'YWzzq · 研究手记'
+timeZone = 'Asia/Shanghai'
+hasCJKLanguage = true
+enableRobotsTXT = true
+enableGitInfo = false
+summaryLength = 96
+
+[pagination]
+  pagerSize = 8
+
+[permalinks]
+  posts = '/writing/:slug/'
+
+[taxonomies]
+  tag = 'tags'
+
+[outputs]
+  home = ['html', 'rss', 'json']
+  section = ['html', 'rss']
+  taxonomy = ['html']
+  term = ['html', 'rss']
+
+[params]
+  displayName = 'YWzzq'
+  monogram = 'YW.'
+  role = '计算机视觉研究者'
+  description = '关注热红外成像、场景理解与可复现研究。这里记录论文阅读、实验复盘和工程实践。'
+  heroNote = 'Computer Vision · Thermal Imaging · Reproducible Research'
+  location = 'China'
+  footerNote = '在像素、时序与真实世界之间持续观察。'
+  mainSections = ['posts']
+
+  [params.social]
+    github = ''
+    email = ''
+
+  [[params.focus]]
+    number = '01'
+    title = '热红外视觉'
+    description = '复杂光照与长时序场景中的稳健感知。'
+
+  [[params.focus]]
+    number = '02'
+    title = '场景理解'
+    description = '从像素级表征到可解释的空间推理。'
+
+  [[params.focus]]
+    number = '03'
+    title = '研究工程'
+    description = '可追踪、可比较、可复现的实验工作流。'
+
+[[menus.main]]
+  name = '文章'
+  pageRef = '/posts'
+  weight = 10
+
+[[menus.main]]
+  name = '归档'
+  pageRef = '/archives'
+  weight = 20
+
+[[menus.main]]
+  name = '标签'
+  pageRef = '/tags'
+  weight = 30
+
+[[menus.main]]
+  name = '关于'
+  pageRef = '/about'
+  weight = 40
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    noClasses = false
+
+[sitemap]
+  changeFreq = 'weekly'
+  priority = 0.5
+  filename = 'sitemap.xml'

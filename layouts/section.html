@@ -1,0 +1,16 @@
+{{ define "main" }}
+  <header class="page-heading shell">
+    <p class="section-kicker">文章</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  </header>
+  <section class="listing-section shell">
+    {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
+    <div class="article-list">
+      {{ range $index, $page := $paginator.Pages }}
+        {{ partial "article-row.html" (dict "page" $page "index" (add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (add $index 1)) "level" 2) }}
+      {{ end }}
+    </div>
+    {{ partial "pagination.html" $paginator }}
+  </section>
+{{ end }}

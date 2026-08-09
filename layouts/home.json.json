@@ -1,0 +1,14 @@
+{{- $items := slice -}}
+{{- range where site.RegularPages "Section" "posts" -}}
+  {{- if not .Params.searchExclude -}}
+    {{- $items = $items | append (dict
+      "title" .LinkTitle
+      "url" .RelPermalink
+      "date" (.Date.Format "2006-01-02")
+      "summary" (.Description | default (.Summary | plainify))
+      "content" (.Plain | htmlUnescape)
+      "tags" (.Params.tags | default (slice))
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $items | jsonify -}}

@@ -1,0 +1,20 @@
+<footer class="site-footer">
+  <div class="footer-inner shell">
+    <div>
+      <p class="footer-brand">{{ site.Params.displayName }}</p>
+      <p class="footer-note">{{ site.Params.footerNote }}</p>
+    </div>
+    <nav class="footer-links" aria-label="页脚链接">
+      {{ with site.Params.social.github }}
+        <a href="{{ . }}" target="_blank" rel="me noopener">GitHub</a>
+      {{ end }}
+      {{ with site.Params.social.email }}
+        <a href="mailto:{{ . }}">Email</a>
+      {{ end }}
+      {{ with site.Home.OutputFormats.Get "rss" }}
+        <a href="{{ .RelPermalink }}">RSS</a>
+      {{ end }}
+    </nav>
+    <p class="footer-copy">© {{ now.Year }} {{ site.Params.displayName }}</p>
+  </div>
+</footer>

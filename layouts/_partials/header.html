@@ -1,0 +1,33 @@
+<header class="site-header" data-site-header>
+  <div class="header-inner shell">
+    <a class="site-brand" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }}首页">
+      <span class="brand-mark" aria-hidden="true">{{ site.Params.monogram }}</span>
+      <span class="brand-name">{{ site.Params.displayName }}</span>
+    </a>
+
+    <nav class="primary-nav" id="primary-nav" aria-label="主导航" data-primary-nav>
+      {{ range site.Menus.main }}
+        <a href="{{ .URL }}"{{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>
+      {{ end }}
+    </nav>
+
+    <div class="header-actions">
+      {{ with site.Params.social.github }}
+        <a class="icon-button desktop-only" href="{{ . }}" target="_blank" rel="me noopener" aria-label="GitHub">
+          {{ partial "icon.html" (dict "name" "github") }}
+        </a>
+      {{ end }}
+      <button class="icon-button" type="button" data-open-search aria-label="搜索">
+        {{ partial "icon.html" (dict "name" "search") }}
+      </button>
+      <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色主题">
+        <span class="theme-icon theme-icon-sun">{{ partial "icon.html" (dict "name" "sun") }}</span>
+        <span class="theme-icon theme-icon-moon">{{ partial "icon.html" (dict "name" "moon") }}</span>
+      </button>
+      <button class="icon-button menu-toggle" type="button" data-menu-toggle aria-label="打开导航" aria-controls="primary-nav" aria-expanded="false">
+        <span class="menu-icon-open">{{ partial "icon.html" (dict "name" "menu") }}</span>
+        <span class="menu-icon-close">{{ partial "icon.html" (dict "name" "close") }}</span>
+      </button>
+    </div>
+  </div>
+</header>

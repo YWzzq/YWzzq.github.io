@@ -1,0 +1,15 @@
+{{ define "main" }}
+  <header class="page-heading shell">
+    <p class="section-kicker">主题索引</p>
+    <h1>{{ .Title }}</h1>
+    <p>沿着主题浏览全部记录。</p>
+  </header>
+  <section class="term-cloud shell" aria-label="标签列表">
+    {{ range .Data.Terms.ByCount }}
+      <a href="{{ .Page.RelPermalink }}">
+        <span>{{ .Page.LinkTitle }}</span>
+        <strong>{{ .Count }}</strong>
+      </a>
+    {{ end }}
+  </section>
+{{ end }}

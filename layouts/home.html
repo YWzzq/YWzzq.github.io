@@ -1,0 +1,71 @@
+{{ define "main" }}
+  <section class="hero" aria-labelledby="hero-title">
+    <canvas class="hero-canvas" data-signal-canvas aria-hidden="true"></canvas>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-content shell">
+      <p class="hero-note">{{ site.Params.heroNote }}</p>
+      <h1 id="hero-title">{{ site.Params.displayName }}</h1>
+      <p class="hero-role">{{ site.Params.role }}</p>
+      <p class="hero-description">{{ site.Params.description }}</p>
+      <div class="hero-links">
+        <a class="text-action light" href="{{ "posts/" | relURL }}">阅读文章 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+        <a class="text-action quiet-light" href="{{ "about/" | relURL }}">了解更多</a>
+      </div>
+    </div>
+    <div class="hero-readout shell" aria-hidden="true">
+      <span>THERMAL · TEMPORAL · VISION</span>
+      <span>FIELD NOTES</span>
+    </div>
+  </section>
+
+  <section class="intro-band">
+    <div class="shell intro-grid">
+      <p class="section-kicker">研究坐标</p>
+      <p class="intro-statement">把模型放回真实场景，用可复现的证据回答问题。</p>
+      <p class="intro-side">关注复杂环境中的视觉感知，也记录让研究更清晰、更可靠的工程方法。</p>
+    </div>
+  </section>
+
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  <section class="latest-section shell" aria-labelledby="latest-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">近期写作</p>
+        <h2 id="latest-title">近期记录</h2>
+      </div>
+      <a class="text-action" href="{{ "posts/" | relURL }}">全部文章 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+    </div>
+    <div class="article-list">
+      {{ range $index, $page := first 4 $posts.ByDate.Reverse }}
+        {{ partial "article-row.html" (dict "page" $page "index" (add $index 1) "level" 3) }}
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="focus-section">
+    <div class="shell">
+      <div class="section-heading focus-heading">
+        <div>
+          <p class="section-kicker">当前关注</p>
+          <h2>研究方向</h2>
+        </div>
+        <p>持续收窄问题，也保持对相邻领域的好奇。</p>
+      </div>
+      <div class="focus-grid">
+        {{ range site.Params.focus }}
+          <article class="focus-item">
+            <span>{{ .number }}</span>
+            <h3>{{ .title }}</h3>
+            <p>{{ .description }}</p>
+          </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <section class="closing-band shell">
+    <p class="section-kicker">研究手记</p>
+    <p>保留推理过程，也保留尚未解决的问题。</p>
+    <a class="text-action" href="{{ "archives/" | relURL }}">浏览归档 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+  </section>
+{{ end }}
