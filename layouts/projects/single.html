@@ -1,0 +1,62 @@
+{{ define "main" }}
+  <article class="project-page">
+    <header class="project-hero">
+      <div class="project-hero-grid shell">
+        <div class="project-hero-main">
+          <a class="back-link project-back-link" href="{{ "projects/" | relURL }}">{{ partial "icon.html" (dict "name" "arrow-left") }} 全部项目</a>
+          <div class="project-row-meta">
+            <span class="project-status project-status-{{ .Params.status | default "unknown" }}">
+              <span aria-hidden="true"></span>{{ .Params.statusLabel | default "状态待更新" }}
+            </span>
+            {{ with .Params.phase }}<span>{{ . }}</span>{{ end }}
+          </div>
+          <h1>{{ .Title }}</h1>
+          {{ with .Description }}<p class="project-deck">{{ . }}</p>{{ end }}
+        </div>
+
+        <dl class="project-facts" aria-label="项目概况">
+          <div>
+            <dt>当前状态</dt>
+            <dd>{{ .Params.statusLabel | default "待更新" }}</dd>
+          </div>
+          {{ with .Params.phase }}
+            <div>
+              <dt>当前阶段</dt>
+              <dd>{{ . }}</dd>
+            </div>
+          {{ end }}
+          {{ with .Params.evidence }}
+            <div>
+              <dt>公开证据</dt>
+              <dd>{{ . }}</dd>
+            </div>
+          {{ end }}
+        </dl>
+      </div>
+    </header>
+
+    <div class="project-content shell">
+      {{ with .Params.scope }}
+        <aside class="project-scope" aria-labelledby="project-scope-title">
+          <p class="section-kicker" id="project-scope-title">研究范围</p>
+          <ol>
+            {{ range $index, $item := . }}
+              <li><span aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>{{ $item }}</li>
+            {{ end }}
+          </ol>
+        </aside>
+      {{ end }}
+      <div class="prose project-prose" data-article-content>
+        {{ .Content }}
+      </div>
+    </div>
+
+    <footer class="project-footer shell">
+      <div>
+        <p class="section-kicker">项目状态</p>
+        <p>{{ .Params.statusLabel | default "待更新" }} · {{ .Params.evidence | default "公开信息待补充" }}</p>
+      </div>
+      <a class="text-action" href="{{ "projects/" | relURL }}">返回项目列表 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+    </footer>
+  </article>
+{{ end }}

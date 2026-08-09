@@ -1,0 +1,37 @@
+{{ define "main" }}
+  <header class="page-heading projects-heading shell">
+    <p class="section-kicker">Research Projects</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+  </header>
+
+  <section class="project-index shell" aria-label="研究项目列表">
+    <div class="project-list">
+      {{ range $index, $project := .RegularPages.ByWeight }}
+        <article class="project-row">
+          <div class="project-row-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</div>
+          <div class="project-row-main">
+            <div class="project-row-meta">
+              <span class="project-status project-status-{{ $project.Params.status | default "unknown" }}">
+                <span aria-hidden="true"></span>{{ $project.Params.statusLabel | default "状态待更新" }}
+              </span>
+              {{ with $project.Params.phase }}<span>{{ . }}</span>{{ end }}
+            </div>
+            <h2><a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a></h2>
+            {{ with $project.Description }}<p>{{ . }}</p>{{ end }}
+            {{ with $project.Params.areas }}
+              <ul class="project-area-list" aria-label="研究方向">
+                {{ range . }}<li>{{ . }}</li>{{ end }}
+              </ul>
+            {{ end }}
+          </div>
+          <a class="project-row-link" href="{{ $project.RelPermalink }}" aria-label="查看项目《{{ $project.LinkTitle }}》">
+            <span>查看项目</span>{{ partial "icon.html" (dict "name" "arrow-right") }}
+          </a>
+        </article>
+      {{ else }}
+        <p class="project-empty">公开项目整理中。</p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

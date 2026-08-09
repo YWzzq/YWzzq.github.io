@@ -1,0 +1,43 @@
+{{- $page := .page -}}
+{{- $description := .description -}}
+{{- $personID := printf "%s#person" site.Home.Permalink -}}
+{{- $websiteID := printf "%s#website" site.Home.Permalink -}}
+{{- $person := dict
+  "@type" "Person"
+  "@id" $personID
+  "name" site.Params.displayName
+  "url" site.Home.Permalink
+  "description" site.Params.description
+-}}
+{{- $website := dict
+  "@type" "WebSite"
+  "@id" $websiteID
+  "name" site.Title
+  "url" site.Home.Permalink
+  "description" site.Params.description
+  "inLanguage" site.Language.Locale
+  "author" (dict "@id" $personID)
+-}}
+{{- $entities := slice $person $website -}}
+{{- if .isArticle -}}
+  {{- $article := dict
+    "@type" "BlogPosting"
+    "@id" (printf "%s#article" $page.Permalink)
+    "headline" $page.Title
+    "description" $description
+    "url" $page.Permalink
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" $page.Permalink)
+    "datePublished" ($page.PublishDate.Format "2006-01-02T15:04:05Z07:00")
+    "dateModified" ($page.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+    "inLanguage" site.Language.Locale
+    "author" (dict "@id" $personID)
+    "publisher" (dict "@id" $personID)
+    "isPartOf" (dict "@id" $websiteID)
+  -}}
+  {{- with $page.Params.tags -}}
+    {{- $article = merge $article (dict "keywords" .) -}}
+  {{- end -}}
+  {{- $entities = $entities | append $article -}}
+{{- end -}}
+{{- $schema := dict "@context" "https://schema.org" "@graph" $entities -}}
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>

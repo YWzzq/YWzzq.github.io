@@ -12,6 +12,14 @@ hugo server -D
 
 浏览器打开 `http://localhost:1313/`。
 
+提交前可运行与线上部署一致的检查：
+
+```bash
+hugo --cleanDestinationDir --gc --minify --panicOnWarning \
+  --printPathWarnings --printUnusedTemplates
+node scripts/check-site.mjs public
+```
+
 ## 修改个人信息
 
 主要信息集中在 `hugo.toml`：

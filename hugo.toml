@@ -59,6 +59,11 @@ summaryLength = 96
   weight = 10
 
 [[menus.main]]
+  name = '项目'
+  pageRef = '/projects'
+  weight = 15
+
+[[menus.main]]
   name = '归档'
   pageRef = '/archives'
   weight = 20

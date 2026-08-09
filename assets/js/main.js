@@ -228,10 +228,17 @@
     const context = canvas.getContext('2d', { alpha: false });
     const field = document.createElement('canvas');
     const fieldContext = field.getContext('2d', { alpha: false });
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!context || !fieldContext) return;
+
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reducedMotion = motionPreference.matches;
     let width = 0;
     let height = 0;
-    let lastFrame = -100;
+    let inViewport = true;
+    let animationFrame = null;
+    let previousTimestamp = null;
+    let lastPaintTimestamp = -Infinity;
+    let animationElapsed = reducedMotion ? 8.4 / 0.00018 : 0;
 
     const palette = [
       [0.00, [5, 13, 16]],
@@ -258,21 +265,20 @@
     const resizeCanvas = () => {
       const bounds = canvas.getBoundingClientRect();
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      width = Math.max(1, Math.round(bounds.width * ratio));
-      height = Math.max(1, Math.round(bounds.height * ratio));
+      const nextWidth = Math.max(1, Math.round(bounds.width * ratio));
+      const nextHeight = Math.max(1, Math.round(bounds.height * ratio));
+      if (nextWidth === width && nextHeight === height) return false;
+
+      width = nextWidth;
+      height = nextHeight;
       canvas.width = width;
       canvas.height = height;
       field.width = 180;
       field.height = Math.max(80, Math.round(180 * height / width));
+      return true;
     };
 
-    const draw = (timestamp = 0) => {
-      if (!reducedMotion && timestamp - lastFrame < 48) {
-        requestAnimationFrame(draw);
-        return;
-      }
-      lastFrame = timestamp;
-      const t = reducedMotion ? 8.4 : timestamp * 0.00018;
+    const draw = (t) => {
       const image = fieldContext.createImageData(field.width, field.height);
 
       for (let y = 0; y < field.height; y += 1) {
@@ -336,14 +342,118 @@
       }
       context.stroke();
       context.restore();
+    };
 
-      if (!reducedMotion) requestAnimationFrame(draw);
+    const drawCurrentFrame = () => draw(animationElapsed * 0.00018);
+    const canAnimate = () => !reducedMotion && inViewport && !document.hidden;
+
+    const stopAnimation = () => {
+      if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+      previousTimestamp = null;
+    };
+
+    const scheduleAnimation = () => {
+      if (animationFrame === null && canAnimate()) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    function animate(timestamp) {
+      animationFrame = null;
+      if (!canAnimate()) {
+        previousTimestamp = null;
+        return;
+      }
+
+      if (previousTimestamp !== null) {
+        const delta = Math.max(0, Math.min(timestamp - previousTimestamp, 100));
+        animationElapsed += delta;
+      }
+      previousTimestamp = timestamp;
+
+      if (timestamp - lastPaintTimestamp >= 48) {
+        drawCurrentFrame();
+        lastPaintTimestamp = timestamp;
+      }
+      scheduleAnimation();
+    }
+
+    const syncAnimation = () => {
+      if (canAnimate()) {
+        scheduleAnimation();
+        return;
+      }
+
+      stopAnimation();
+      if (reducedMotion && inViewport && !document.hidden) {
+        drawCurrentFrame();
+      }
+    };
+
+    const isCanvasInViewport = () => {
+      const bounds = canvas.getBoundingClientRect();
+      return bounds.width > 0 && bounds.height > 0 && bounds.bottom > 0 && bounds.right > 0 &&
+        bounds.top < window.innerHeight && bounds.left < window.innerWidth;
+    };
+
+    const handleResize = () => {
+      if (!resizeCanvas() || !inViewport || document.hidden) return;
+      drawCurrentFrame();
+      lastPaintTimestamp = performance.now();
     };
 
     resizeCanvas();
-    draw();
-    if ('ResizeObserver' in window) new ResizeObserver(resizeCanvas).observe(canvas);
-    else window.addEventListener('resize', resizeCanvas);
+    inViewport = isCanvasInViewport();
+    if (inViewport && !document.hidden) {
+      drawCurrentFrame();
+      lastPaintTimestamp = performance.now();
+    }
+    scheduleAnimation();
+
+    document.addEventListener('visibilitychange', syncAnimation);
+
+    if (typeof motionPreference.addEventListener === 'function') {
+      motionPreference.addEventListener('change', (event) => {
+        reducedMotion = event.matches;
+        syncAnimation();
+      });
+    } else {
+      motionPreference.addListener((event) => {
+        reducedMotion = event.matches;
+        syncAnimation();
+      });
+    }
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(canvas);
+    } else {
+      window.addEventListener('resize', handleResize);
+    }
+
+    if ('IntersectionObserver' in window) {
+      const visibilityObserver = new IntersectionObserver(([entry]) => {
+        inViewport = entry.isIntersecting;
+        syncAnimation();
+      });
+      visibilityObserver.observe(canvas);
+    } else {
+      let viewportCheckFrame = null;
+      const queueViewportCheck = () => {
+        if (viewportCheckFrame !== null) return;
+        viewportCheckFrame = requestAnimationFrame(() => {
+          viewportCheckFrame = null;
+          const nextInViewport = isCanvasInViewport();
+          if (nextInViewport === inViewport) return;
+          inViewport = nextInViewport;
+          syncAnimation();
+        });
+      };
+
+      window.addEventListener('scroll', queueViewportCheck, { passive: true });
+      window.addEventListener('resize', queueViewportCheck);
+    }
   }
 
 })();

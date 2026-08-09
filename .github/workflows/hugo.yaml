@@ -44,7 +44,13 @@ jobs:
         env:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
-        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: >-
+          hugo --cleanDestinationDir --gc --minify --panicOnWarning
+          --printPathWarnings --printUnusedTemplates
+          --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Validate generated site
+        run: node scripts/check-site.mjs public
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
