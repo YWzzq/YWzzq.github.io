@@ -1,0 +1,38 @@
+{{ $config := site.Params.twikoo }}
+{{ if and $config $config.enabled (eq .Section "posts") }}
+  {{ $version := $config.version | default "1.7.15" }}
+  {{ $script := $config.script | default "twikoo.min.js" }}
+  {{ $scriptIntegrity := $config.scriptIntegrity | default "" }}
+  {{ $maxComments := $config.maxComments | default 100 }}
+  {{ $maxReplies := $config.maxReplies | default 50 }}
+  {{ $maxLength := $config.maxLength | default 1000 }}
+  <section class="comments-section shell-narrow" aria-labelledby="comments-title"
+    data-twikoo-section
+    data-twikoo-env-id="{{ $config.envId | default "" }}"
+    data-twikoo-version="{{ $version }}"
+    data-twikoo-script="{{ $script }}"
+    data-twikoo-integrity="{{ $scriptIntegrity }}"
+    data-twikoo-max-comments="{{ $maxComments }}"
+    data-twikoo-max-replies="{{ $maxReplies }}"
+    data-twikoo-max-length="{{ $maxLength }}">
+    <div class="comments-heading">
+      <div>
+        <p class="section-kicker">交流</p>
+        <h2 id="comments-title">评论</h2>
+      </div>
+      <p class="comments-limits">每篇最多 {{ $maxComments }} 条 · 每条最多 {{ $maxReplies }} 条回复 · {{ $maxLength }} 字</p>
+    </div>
+
+    {{ with $config.envId }}
+      <div id="twikoo-comments" class="twikoo-comments" data-twikoo-root></div>
+      <p class="comments-status" data-twikoo-status role="status" aria-live="polite"></p>
+      {{ $twikooScript := resources.Get "js/twikoo.js" | minify | fingerprint }}
+      <script src="{{ $twikooScript.RelPermalink }}" integrity="{{ $twikooScript.Data.Integrity }}" defer></script>
+    {{ else }}
+      <div class="comments-setup" role="note">
+        <strong>评论区即将开放</strong>
+        <p>请在 <code>hugo.toml</code> 的 <code>params.twikoo.envId</code> 填入 Twikoo 环境 ID（或 Vercel 地址），再重新部署站点。</p>
+      </div>
+    {{ end }}
+  </section>
+{{ end }}

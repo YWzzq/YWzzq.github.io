@@ -37,6 +37,26 @@ node scripts/check-site.mjs public
 hugo new content posts/my-new-post.md
 ```
 
+## 配置 Twikoo 评论
+
+文章页已经预留 Twikoo 评论区。首次部署时，先按 [Twikoo 快速开始](https://twikoo.js.org/quick-start.html) 部署评论后端，再在 `hugo.toml` 填入环境 ID：
+
+```toml
+[params.twikoo]
+  enabled = true
+  envId = '你的环境 ID 或 Vercel 地址'
+```
+
+然后在 Twikoo 管理面板设置：
+
+- `COMMENT_PAGE_SIZE = 100`：单次最多读取 100 条主评论。
+- `LIMIT_LENGTH = 1000`：评论内容最多 1000 字；这是后端校验，不能只依赖浏览器输入框。
+- `SHOW_EMOTION = true`：显示 Emoji 表情按钮。
+
+博客前端会将每篇文章最多呈现 100 条主评论、每条主评论最多呈现 50 条回复，并在达到回复上限后禁用继续回复。Twikoo 的评论数据仍保存在后端；如果需要数据库层面的总量硬限制，还需要在 Twikoo 云函数的 `COMMENT_SUBMIT` 中按文章 URL 和回复楼层增加校验。
+
+默认使用锁定版本的 `twikoo.min.js` CDN 脚本并启用 SRI。如果使用腾讯云云开发，请按 Twikoo 文档将 `script` 改为 `twikoo.all.min.js`，并同步替换对应的 `scriptIntegrity`。
+
 ## 发布到 GitHub Pages
 
 1. 在 GitHub 新建仓库。个人主页建议命名为 `<用户名>.github.io`，项目主页也可以使用任意仓库名。

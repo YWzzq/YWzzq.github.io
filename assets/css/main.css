@@ -995,6 +995,104 @@ button {
   border-radius: 4px;
 }
 
+.comments-section {
+  margin-top: 84px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
+.comments-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.comments-heading h2 {
+  margin: 8px 0 0;
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.comments-limits,
+.comments-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.comments-status {
+  min-height: 1.6em;
+  margin-top: 14px;
+}
+
+.comments-setup {
+  padding: 22px 24px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+.comments-setup strong {
+  color: var(--ink);
+}
+
+.comments-setup p {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.comments-setup code {
+  padding: 0.12em 0.3em;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  color: var(--signal-strong);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.twikoo-comments {
+  min-height: 12rem;
+  color: var(--ink-soft);
+}
+
+.twikoo-comments .twikoo,
+.twikoo-comments .tk-comments,
+.twikoo-comments .tk-submit,
+.twikoo-comments .tk-comments-container {
+  color: inherit;
+}
+
+.twikoo-comments .tk-input,
+.twikoo-comments .el-input__inner,
+.twikoo-comments .el-textarea__inner {
+  color: var(--ink-soft);
+  background: var(--surface);
+}
+
+.twikoo-comments .el-textarea__inner::placeholder,
+.twikoo-comments .el-input__inner::placeholder {
+  color: var(--muted);
+}
+
+.twikoo-comments .tk-content a {
+  color: var(--cyan);
+}
+
+.twikoo-comments .twikoo-reply-limit-reached {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.twikoo-comments [hidden] {
+  display: none !important;
+}
+
 .post-footer {
   display: flex;
   align-items: end;
@@ -1937,6 +2035,17 @@ button {
     flex-direction: column;
     margin-top: 64px;
     padding-bottom: 80px;
+  }
+
+  .comments-section {
+    margin-top: 64px;
+  }
+
+  .comments-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
   }
 
   .about-layout {

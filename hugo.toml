@@ -33,6 +33,17 @@ summaryLength = 96
   footerNote = '保留过程，也保留仍在形成中的想法。'
   mainSections = ['posts']
 
+  [params.twikoo]
+    enabled = true
+    envId = ''
+    version = '1.7.15'
+    script = 'twikoo.min.js'
+    scriptIntegrity = 'sha384-p/8hqKQGpONGx9zGfRqetAH4uO2A4k1aX8zCoMHAL2ac8zegzHrcEOsWsrUIzK1B'
+    maxComments = 100
+    maxReplies = 50
+    maxLength = 1000
+    showEmotion = true
+
   [params.social]
     github = 'https://github.com/YWzzq'
     email = ''
