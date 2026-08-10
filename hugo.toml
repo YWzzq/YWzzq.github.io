@@ -35,7 +35,7 @@ summaryLength = 96
 
   [params.twikoo]
     enabled = true
-    envId = ''
+    envId = 'https://verdant-squirrel-cd4c9a.netlify.app/.netlify/functions/twikoo'
     version = '1.7.15'
     script = 'twikoo.min.js'
     scriptIntegrity = 'sha384-p/8hqKQGpONGx9zGfRqetAH4uO2A4k1aX8zCoMHAL2ac8zegzHrcEOsWsrUIzK1B'
