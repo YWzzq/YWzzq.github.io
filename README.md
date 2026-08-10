@@ -44,8 +44,21 @@ hugo new content posts/my-new-post.md
 ```toml
 [params.twikoo]
   enabled = true
-  envId = '你的环境 ID 或 Vercel 地址'
+  envId = '你的环境 ID 或 Netlify/Vercel 地址'
 ```
+
+### Netlify + MongoDB Atlas
+
+这是当前博客建议的低成本方案，评论前端继续部署在 GitHub Pages，Twikoo 云函数部署在 Netlify：
+
+1. 在 [MongoDB Atlas](https://www.mongodb.com/atlas/database) 创建免费数据库，建立数据库用户并复制连接字符串。连接字符串只放在 Netlify 环境变量中，不要提交到 GitHub。
+2. Fork 官方 [twikoo-netlify](https://github.com/twikoojs/twikoo-netlify) 仓库到自己的 GitHub 账号。
+3. 登录 [Netlify](https://app.netlify.com/)，选择 **Add new site → Import an existing project → GitHub**，选择刚才 Fork 的仓库。
+4. 在部署设置中添加环境变量 `MONGODB_URI`，值为 MongoDB 连接字符串，然后部署。
+5. 部署完成后，把站点域名改成易记的三级域名，例如 `https://ywzzq-twikoo.netlify.app`。打开 `https://你的域名.netlify.app/.netlify/functions/twikoo`，看到 Twikoo 云函数运行正常后，将这个完整地址填入 `params.twikoo.envId`。
+6. 重新推送博客，评论区就会从“即将开放”切换为可用状态。
+
+Netlify 方案的环境 ID 必须包含 `/.netlify/functions/twikoo` 后缀；当前前端已使用适合 Netlify 的 `twikoo.min.js`，不需要改模板。官方部署步骤和免费额度以 [Twikoo Netlify 文档](https://twikoo.js.org/backend.html) 为准。
 
 然后在 Twikoo 管理面板设置：
 
