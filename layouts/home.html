@@ -4,7 +4,7 @@
     <div class="hero-content shell">
       <p class="hero-note">{{ site.Params.heroNote }}</p>
       <h1 id="hero-title">{{ site.Params.displayName }}</h1>
-      <p class="hero-role">{{ site.Params.role }}</p>
+      {{ with site.Params.role }}<p class="hero-role">{{ . }}</p>{{ end }}
       <p class="hero-description">{{ site.Params.description }}</p>
       <div class="hero-links">
         <a class="text-action light" href="{{ "posts/" | relURL }}">浏览记录 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
