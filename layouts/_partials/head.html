@@ -31,7 +31,7 @@
 {{ end }}
 {{ with .Params.tags }}<meta name="keywords" content="{{ delimit . ", " }}">{{ end }}
 {{ partial "schema.html" (dict "page" . "description" $description "isArticle" $isArticle) }}
-{{ $style := resources.Get "css/main.css" | minify | fingerprint }}
+{{ $style := slice (resources.Get "css/main.css") (resources.Get "css/refinement.css") | resources.Concat "css/site.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 <script>
   (function () {

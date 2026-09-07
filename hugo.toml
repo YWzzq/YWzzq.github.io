@@ -27,8 +27,8 @@ summaryLength = 96
 [params]
   displayName = 'YWzzq'
   monogram = 'YW.'
-  role = '记录想法与实践'
-  description = '这里整理阅读、项目、研究与技术实践中的问题、过程和复盘。'
+  role = '计算机专业研究生'
+  description = '记录技术学习、项目实践与研究过程。把好奇变成尝试，让每一次探索都有迹可循。'
   heroNote = 'Notes · Projects · Research · Technology'
   footerNote = '保留过程，也保留仍在形成中的想法。'
   mainSections = ['posts']
