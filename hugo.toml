@@ -28,7 +28,7 @@ summaryLength = 96
   displayName = 'YWzzq'
   monogram = 'YW.'
   role = '计算机专业研究生'
-  description = '记录技术学习、项目实践与研究过程。把好奇变成尝试，让每一次探索都有迹可循。'
+  description = '个人主页与记录空间。'
   heroNote = 'Notes · Projects · Research · Technology'
   footerNote = '保留过程，也保留仍在形成中的想法。'
   mainSections = ['posts']
@@ -47,21 +47,6 @@ summaryLength = 96
   [params.social]
     github = 'https://github.com/YWzzq'
     email = ''
-
-  [[params.focus]]
-    number = '01'
-    title = '问题与想法'
-    description = '从具体问题出发，记录推理、取舍与尚未解决的部分。'
-
-  [[params.focus]]
-    number = '02'
-    title = '项目与实践'
-    description = '把阅读、研究和技术实践中的过程整理成可回看的记录。'
-
-  [[params.focus]]
-    number = '03'
-    title = '持续学习'
-    description = '关注工具、方法与相邻领域，并通过写作沉淀新的理解。'
 
 [[menus.main]]
   name = '首页'
