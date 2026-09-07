@@ -5,8 +5,8 @@
         <div class="project-hero-main">
           <a class="back-link project-back-link" href="{{ "projects/" | relURL }}">{{ partial "icon.html" (dict "name" "arrow-left") }} 全部项目</a>
           <div class="project-row-meta">
-            <span class="project-status project-status-{{ .Params.status | default "unknown" }}">
-              <span aria-hidden="true"></span>{{ .Params.statusLabel | default "状态待更新" }}
+            <span class="project-status project-status-{{ .Params.status | default "planning" }}">
+              <span class="status-dot" aria-hidden="true"></span>{{ .Params.statusLabel | default "规划筹备中" }}
             </span>
             {{ with .Params.phase }}<span>{{ . }}</span>{{ end }}
           </div>
@@ -35,7 +35,7 @@
       </div>
     </header>
 
-    <div class="project-content shell">
+    <div class="project-content shell{{ if not .Params.scope }} no-scope{{ end }}">
       {{ with .Params.scope }}
         <aside class="project-scope" aria-labelledby="project-scope-title">
           <p class="section-kicker" id="project-scope-title">项目范围</p>

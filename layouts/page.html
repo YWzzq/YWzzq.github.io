@@ -14,16 +14,16 @@
       </div>
     </header>
 
-    <div class="post-layout shell">
+    <div class="post-layout shell{{ if in .TableOfContents "<li>" }} has-toc{{ else }} no-toc{{ end }}">
+      <div class="prose" data-article-content>
+        {{ .Content }}
+      </div>
       {{ if in .TableOfContents "<li>" }}
         <aside class="post-toc" aria-label="文章目录">
           <p>目录</p>
           {{ .TableOfContents }}
         </aside>
       {{ end }}
-      <div class="prose" data-article-content>
-        {{ .Content }}
-      </div>
     </div>
 
     {{ partial "comments.html" . }}
