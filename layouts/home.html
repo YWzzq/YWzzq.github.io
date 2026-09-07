@@ -1,19 +1,33 @@
 {{ define "main" }}
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><span class="art-code">{ curiosity }</span><span class="art-caption">LEARN / BUILD / REFLECT</span></div>
+    <div class="hero-ambient" aria-hidden="true"></div>
     <div class="hero-content shell">
-      <p class="hero-note">{{ site.Params.heroNote }}</p>
+      <div class="hero-badge">
+        <span class="status-indicator" aria-hidden="true">
+          <span class="status-ping"></span>
+          <span class="status-dot"></span>
+        </span>
+        <span class="badge-text">{{ site.Params.heroNote | default "Notes · Projects · Ideas" }}</span>
+      </div>
+
       <h1 id="hero-title">{{ site.Params.displayName }}</h1>
       {{ with site.Params.role }}<p class="hero-role">{{ . }}</p>{{ end }}
       <p class="hero-description">{{ site.Params.description }}</p>
+
       <div class="hero-links">
-        <a class="text-action light" href="{{ "posts/" | relURL }}">浏览记录 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
-        <a class="text-action quiet-light" href="{{ "projects/" | relURL }}">浏览项目</a>
+        <a class="action-btn action-btn-primary" href="{{ "posts/" | relURL }}">
+          <span>浏览记录</span>
+          {{ partial "icon.html" (dict "name" "arrow-right") }}
+        </a>
+        <a class="action-btn action-btn-secondary" href="{{ "projects/" | relURL }}">
+          <span>精选项目</span>
+        </a>
+        <button class="action-btn action-btn-ghost desktop-only" type="button" data-open-search>
+          {{ partial "icon.html" (dict "name" "search") }}
+          <span>站内搜索</span>
+          <kbd class="btn-kbd">⌘K</kbd>
+        </button>
       </div>
-    </div>
-    <div class="hero-readout shell" aria-hidden="true">
-      <span>学习 · 实践 · 思考</span>
-      <span>持续更新的个人笔记</span>
     </div>
   </section>
 
@@ -21,51 +35,78 @@
   <section class="latest-section shell" aria-labelledby="latest-title">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">笔记与想法</p>
+        <p class="section-kicker">Writing</p>
         <h2 id="latest-title">近期记录</h2>
       </div>
-      <a class="text-action" href="{{ "posts/" | relURL }}">全部记录 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+      <a class="text-action" href="{{ "posts/" | relURL }}">
+        <span>全部记录</span>
+        {{ partial "icon.html" (dict "name" "arrow-right") }}
+      </a>
     </div>
+
     <div class="article-list">
       {{ range $index, $page := first 4 $posts.ByDate.Reverse }}
         {{ partial "article-row.html" (dict "page" $page "index" (add $index 1) "level" 3) }}
+      {{ else }}
+        <div class="empty-state-card">
+          <div class="empty-state-visual" aria-hidden="true">
+            {{ partial "icon.html" (dict "name" "book-open") }}
+          </div>
+          <div class="empty-state-content">
+            <h3 class="empty-state-title">记录整理中</h3>
+            <p class="empty-state-desc">目前暂未公开文章。新的技术手记、项目复盘与学习思考正在梳理中，发布后将在此呈现。</p>
+          </div>
+        </div>
       {{ end }}
     </div>
   </section>
 
   {{ $projects := where site.RegularPages "Section" "projects" }}
-  <section class="projects-preview" aria-labelledby="projects-preview-title">
-    <div class="shell">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">近期项目</p>
-          <h2 id="projects-preview-title">项目与实践</h2>
-        </div>
-        <a class="text-action" href="{{ "projects/" | relURL }}">全部项目 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+  <section class="projects-preview shell" aria-labelledby="projects-preview-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Projects</p>
+        <h2 id="projects-preview-title">项目与实践</h2>
       </div>
-      <div class="project-preview-list">
-        {{ range $index, $project := first 2 $projects.ByWeight }}
-          <article class="project-preview">
-            <div class="project-preview-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</div>
-            <div class="project-preview-main">
-              <div class="project-row-meta">
-                <span class="project-status project-status-{{ $project.Params.status | default "unknown" }}">
-                  <span aria-hidden="true"></span>{{ $project.Params.statusLabel | default "状态待更新" }}
-                </span>
-                {{ with $project.Params.phase }}<span>{{ . }}</span>{{ end }}
-              </div>
-              <h3><a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a></h3>
-              {{ with $project.Description }}<p>{{ . }}</p>{{ end }}
-            </div>
-            <a class="project-preview-link" href="{{ $project.RelPermalink }}" aria-label="查看项目《{{ $project.LinkTitle }}》">
-              <span>查看项目</span>{{ partial "icon.html" (dict "name" "arrow-right") }}
+      <a class="text-action" href="{{ "projects/" | relURL }}">
+        <span>全部项目</span>
+        {{ partial "icon.html" (dict "name" "arrow-right") }}
+      </a>
+    </div>
+
+    <div class="project-preview-grid">
+      {{ range $index, $project := first 3 $projects.ByWeight }}
+        <article class="project-card">
+          <div class="project-card-header">
+            <span class="project-status-badge project-status-{{ $project.Params.status | default "planning" }}">
+              <span class="status-dot" aria-hidden="true"></span>
+              {{ $project.Params.statusLabel | default "进行中" }}
+            </span>
+            {{ with $project.Params.phase }}
+              <span class="project-phase">{{ . }}</span>
+            {{ end }}
+          </div>
+          <h3 class="project-card-title">
+            <a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a>
+          </h3>
+          <p class="project-card-desc">
+            {{ $project.Description | default "规划与技术选型中，记录从想法到构建的完整过程。" }}
+          </p>
+          <div class="project-card-footer">
+            <a class="project-card-link" href="{{ $project.RelPermalink }}" aria-label="查看项目《{{ $project.LinkTitle }}》">
+              <span>查看详情</span>
+              {{ partial "icon.html" (dict "name" "arrow-right") }}
             </a>
-          </article>
-        {{ else }}
-          <p class="project-empty">项目整理中。</p>
-        {{ end }}
-      </div>
+          </div>
+        </article>
+      {{ else }}
+        <div class="empty-state-card">
+          <div class="empty-state-content">
+            <p class="empty-state-title">暂无公开项目</p>
+            <p class="empty-state-desc">项目整理中。</p>
+          </div>
+        </div>
+      {{ end }}
     </div>
   </section>
-
 {{ end }}

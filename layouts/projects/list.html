@@ -1,36 +1,48 @@
 {{ define "main" }}
   <header class="page-heading projects-heading shell">
-    <p class="section-kicker">Projects</p>
+    <p class="section-kicker">Projects & Works</p>
     <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
   </header>
 
   <section class="project-index shell" aria-label="项目列表">
-    <div class="project-list">
+    <div class="project-preview-grid">
       {{ range $index, $project := .RegularPages.ByWeight }}
-        <article class="project-row">
-          <div class="project-row-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</div>
-          <div class="project-row-main">
-            <div class="project-row-meta">
-              <span class="project-status project-status-{{ $project.Params.status | default "unknown" }}">
-                <span aria-hidden="true"></span>{{ $project.Params.statusLabel | default "状态待更新" }}
-              </span>
-              {{ with $project.Params.phase }}<span>{{ . }}</span>{{ end }}
-            </div>
-            <h2><a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a></h2>
-            {{ with $project.Description }}<p>{{ . }}</p>{{ end }}
-            {{ with $project.Params.areas }}
-              <ul class="project-area-list" aria-label="项目主题">
-                {{ range . }}<li>{{ . }}</li>{{ end }}
-              </ul>
+        <article class="project-card">
+          <div class="project-card-header">
+            <span class="project-status-badge project-status-{{ $project.Params.status | default "planning" }}">
+              <span class="status-dot" aria-hidden="true"></span>
+              {{ $project.Params.statusLabel | default "进行中" }}
+            </span>
+            {{ with $project.Params.phase }}
+              <span class="project-phase">{{ . }}</span>
             {{ end }}
           </div>
-          <a class="project-row-link" href="{{ $project.RelPermalink }}" aria-label="查看项目《{{ $project.LinkTitle }}》">
-            <span>查看项目</span>{{ partial "icon.html" (dict "name" "arrow-right") }}
-          </a>
+          <h2 class="project-card-title">
+            <a href="{{ $project.RelPermalink }}">{{ $project.LinkTitle }}</a>
+          </h2>
+          <p class="project-card-desc">
+            {{ $project.Description | default "正在整理构建中，敬请期待。" }}
+          </p>
+          {{ with $project.Params.areas }}
+            <ul class="project-area-list" aria-label="项目主题">
+              {{ range . }}<li>{{ . }}</li>{{ end }}
+            </ul>
+          {{ end }}
+          <div class="project-card-footer">
+            <a class="project-card-link" href="{{ $project.RelPermalink }}" aria-label="查看项目《{{ $project.LinkTitle }}》">
+              <span>查看详情</span>
+              {{ partial "icon.html" (dict "name" "arrow-right") }}
+            </a>
+          </div>
         </article>
       {{ else }}
-        <p class="project-empty">项目整理中。</p>
+        <div class="empty-state-card">
+          <div class="empty-state-content">
+            <h2 class="empty-state-title">暂无公开项目</h2>
+            <p class="empty-state-desc">项目整理中。</p>
+          </div>
+        </div>
       {{ end }}
     </div>
   </section>

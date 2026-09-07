@@ -17,8 +17,10 @@
           {{ partial "icon.html" (dict "name" "github") }}
         </a>
       {{ end }}
-      <button class="icon-button" type="button" data-open-search aria-label="搜索">
+      <button class="search-trigger" type="button" data-open-search aria-label="搜索 (快捷键 ⌘K)">
         {{ partial "icon.html" (dict "name" "search") }}
+        <span class="search-trigger-text desktop-only">搜索</span>
+        <kbd class="kbd-shortcut desktop-only" aria-hidden="true">⌘K</kbd>
       </button>
       <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色主题">
         <span class="theme-icon theme-icon-sun">{{ partial "icon.html" (dict "name" "sun") }}</span>

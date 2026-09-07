@@ -1,21 +1,33 @@
 {{ define "main" }}
   <header class="page-heading shell">
-    <p class="section-kicker">学习 · 实践 · 日常</p>
+    <p class="section-kicker">Archive & Writing</p>
     <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
   </header>
   <section class="listing-section shell">
-    <nav class="listing-tools" aria-label="记录浏览方式">
-      <span>{{ len .RegularPages }} 条记录</span>
-      <a href="{{ "archives/" | relURL }}">按时间浏览</a>
-      <a href="{{ "tags/" | relURL }}">按标签浏览</a>
-    </nav>
-    {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
-    <div class="article-list">
-      {{ range $index, $page := $paginator.Pages }}
-        {{ partial "article-row.html" (dict "page" $page "index" (add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (add $index 1)) "level" 2) }}
-      {{ end }}
-    </div>
-    {{ partial "pagination.html" $paginator }}
+    {{ if gt (len .RegularPages) 0 }}
+      <nav class="listing-tools" aria-label="记录浏览方式">
+        <span class="listing-count">{{ len .RegularPages }} 篇记录</span>
+        <a class="listing-tool-link" href="{{ "archives/" | relURL }}">按时间归档</a>
+        <a class="listing-tool-link" href="{{ "tags/" | relURL }}">按标签分类</a>
+      </nav>
+      {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
+      <div class="article-list">
+        {{ range $index, $page := $paginator.Pages }}
+          {{ partial "article-row.html" (dict "page" $page "index" (add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (add $index 1)) "level" 2) }}
+        {{ end }}
+      </div>
+      {{ partial "pagination.html" $paginator }}
+    {{ else }}
+      <div class="empty-state-card">
+        <div class="empty-state-visual" aria-hidden="true">
+          {{ partial "icon.html" (dict "name" "book-open") }}
+        </div>
+        <div class="empty-state-content">
+          <h2 class="empty-state-title">记录沉淀中</h2>
+          <p class="empty-state-desc">目前暂未发布正式记录。后续将按主题更新技术笔记、工程踩坑及阶段思考。</p>
+        </div>
+      </div>
+    {{ end }}
   </section>
 {{ end }}

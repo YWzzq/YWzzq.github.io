@@ -1,22 +1,35 @@
 {{ define "main" }}
   <header class="page-heading shell">
-    <p class="section-kicker">时间归档</p>
+    <p class="section-kicker">Timeline</p>
     <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
   </header>
   <section class="archive-list shell">
-    {{ range (where site.RegularPages "Section" "posts").ByDate.Reverse.GroupByDate "2006" }}
-      <div class="archive-year">
-        <h2>{{ .Key }}</h2>
-        <ol>
-          {{ range .Pages }}
-            <li>
-              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01.02" }}</time>
-              <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-              <span>{{ .ReadingTime }} 分钟</span>
-            </li>
-          {{ end }}
-        </ol>
+    {{ $posts := where site.RegularPages "Section" "posts" }}
+    {{ if gt (len $posts) 0 }}
+      {{ range $posts.ByDate.Reverse.GroupByDate "2006" }}
+        <div class="archive-year">
+          <h2>{{ .Key }}</h2>
+          <ol>
+            {{ range .Pages }}
+              <li>
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01.02" }}</time>
+                <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                <span class="archive-readtime">{{ .ReadingTime }} 分钟</span>
+              </li>
+            {{ end }}
+          </ol>
+        </div>
+      {{ end }}
+    {{ else }}
+      <div class="empty-state-card">
+        <div class="empty-state-visual" aria-hidden="true">
+          {{ partial "icon.html" (dict "name" "clock") }}
+        </div>
+        <div class="empty-state-content">
+          <h2 class="empty-state-title">暂无时间归档</h2>
+          <p class="empty-state-desc">后续发布的所有技术文章与笔记将按年份自动沉淀在此处。</p>
+        </div>
       </div>
     {{ end }}
   </section>
