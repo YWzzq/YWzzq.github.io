@@ -29,7 +29,7 @@ summaryLength = 96
   monogram = 'YW.'
   role = ''
   description = '个人主页与记录空间。'
-  heroNote = 'Notes · Projects · Research · Technology'
+  heroNote = 'Notes · Projects · Ideas · Everyday'
   footerNote = '保留过程，也保留仍在形成中的想法。'
   mainSections = ['posts']
 
