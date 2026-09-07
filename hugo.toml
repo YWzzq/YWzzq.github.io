@@ -64,9 +64,9 @@ summaryLength = 96
     description = '关注工具、方法与相邻领域，并通过写作沉淀新的理解。'
 
 [[menus.main]]
-  name = '文章'
-  pageRef = '/posts'
-  weight = 10
+  name = '首页'
+  pageRef = '/'
+  weight = 5
 
 [[menus.main]]
   name = '项目'
@@ -74,19 +74,9 @@ summaryLength = 96
   weight = 15
 
 [[menus.main]]
-  name = '归档'
-  pageRef = '/archives'
+  name = '记录'
+  pageRef = '/posts'
   weight = 20
-
-[[menus.main]]
-  name = '标签'
-  pageRef = '/tags'
-  weight = 30
-
-[[menus.main]]
-  name = '关于'
-  pageRef = '/about'
-  weight = 40
 
 [markup]
   [markup.goldmark]

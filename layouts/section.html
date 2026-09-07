@@ -1,10 +1,15 @@
 {{ define "main" }}
   <header class="page-heading shell">
-    <p class="section-kicker">文章</p>
+    <p class="section-kicker">学习 · 实践 · 日常</p>
     <h1>{{ .Title }}</h1>
     {{ with .Description }}<p>{{ . }}</p>{{ end }}
   </header>
   <section class="listing-section shell">
+    <nav class="listing-tools" aria-label="记录浏览方式">
+      <span>{{ len .RegularPages }} 条记录</span>
+      <a href="{{ "archives/" | relURL }}">按时间浏览</a>
+      <a href="{{ "tags/" | relURL }}">按标签浏览</a>
+    </nav>
     {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
     <div class="article-list">
       {{ range $index, $page := $paginator.Pages }}

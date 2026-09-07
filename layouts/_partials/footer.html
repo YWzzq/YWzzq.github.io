@@ -5,6 +5,9 @@
       <p class="footer-note">{{ site.Params.footerNote }}</p>
     </div>
     <nav class="footer-links" aria-label="页脚链接">
+      <a href="{{ "about/" | relURL }}">关于</a>
+      <a href="{{ "archives/" | relURL }}">归档</a>
+      <a href="#main">回到顶部 ↑</a>
       {{ with site.Params.social.github }}
         <a href="{{ . }}" target="_blank" rel="me noopener">GitHub</a>
       {{ end }}

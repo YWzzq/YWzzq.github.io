@@ -38,6 +38,12 @@
       menuButton.setAttribute('aria-label', isOpen ? '关闭导航' : '打开导航');
     });
     document.querySelectorAll('[data-primary-nav] a').forEach((link) => link.addEventListener('click', closeMenu));
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('[data-site-header]')) closeMenu();
+    });
+    document.addEventListener('focusin', (event) => {
+      if (!event.target.closest('[data-site-header]')) closeMenu();
+    });
     window.addEventListener('resize', () => {
       if (window.innerWidth > 720) closeMenu();
     });
@@ -46,6 +52,7 @@
   const searchDialog = document.querySelector('[data-search-dialog]');
   const openSearch = () => {
     if (!searchDialog) return;
+    closeMenu();
     if (typeof searchDialog.showModal === 'function') searchDialog.showModal();
     else searchDialog.setAttribute('open', '');
     body.classList.add('dialog-open');
@@ -183,11 +190,38 @@
       const start = article.getBoundingClientRect().top + window.scrollY;
       const distance = Math.max(article.offsetHeight - window.innerHeight * 0.45, 1);
       const value = Math.min(1, Math.max(0, (window.scrollY - start + window.innerHeight * 0.25) / distance));
-      progress.style.width = `${value * 100}%`;
+      progress.style.transform = `scaleX(${value})`;
+    };
+    let framePending = false;
+    const scheduleProgress = () => {
+      if (framePending) return;
+      framePending = true;
+      requestAnimationFrame(() => {
+        updateProgress();
+        framePending = false;
+      });
     };
     updateProgress();
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
+    window.addEventListener('scroll', scheduleProgress, { passive: true });
+    window.addEventListener('resize', scheduleProgress);
+    if ('ResizeObserver' in window) new ResizeObserver(scheduleProgress).observe(article);
+  }
+
+  const tocLinks = [...document.querySelectorAll('.post-toc a')];
+  const tocSections = tocLinks.map((link) => ({
+    link, heading: document.getElementById(decodeURIComponent(link.hash.slice(1)))
+  })).filter((item) => item.heading);
+  if (tocSections.length && 'IntersectionObserver' in window) {
+    const updateToc = () => {
+      const active = tocSections.filter((item) => item.heading.getBoundingClientRect().top <= window.innerHeight * 0.35).at(-1) || tocSections[0];
+      tocSections.forEach(({ link }) => {
+        if (link === active.link) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+    const observer = new IntersectionObserver(updateToc, { rootMargin: '-10% 0px -65% 0px' });
+    tocSections.forEach(({ heading }) => observer.observe(heading));
+    updateToc();
   }
 
   const iconMarkup = {

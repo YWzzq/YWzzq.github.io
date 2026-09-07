@@ -95,3 +95,44 @@ body { line-height:1.8; }
   .post-toc { border:1px solid var(--line); }
 }
 @media print { .hero-art { display:none; } .article-row { break-inside:avoid; } }
+
+/* A compact home and clear navigation keep the focus on actual work. */
+.hero,.hero-content { min-height:440px; }
+.hero-content { padding-block:64px 82px; }
+.hero-art { top:30px; width:320px; height:320px; }
+.latest-section { padding-block:54px; }
+.article-row { grid-template-columns:32px minmax(0,1fr) 44px; padding:24px; }
+.article-main>p { margin-bottom:12px; }
+.projects-preview { padding-block:50px 60px; }
+.listing-tools { display:flex; flex-wrap:wrap; align-items:center; gap:12px 22px; margin-bottom:24px; font-size:14px; }
+.listing-tools>span { color:var(--muted); margin-right:auto; }
+.listing-tools a { text-underline-offset:5px; }
+.footer-links { flex-wrap:wrap; }
+.reading-progress { width:100%; transform:scaleX(0); transform-origin:left; transition:none; }
+.post-toc a { display:block; padding-block:5px; }
+.post-toc a[aria-current="location"] { color:var(--signal); font-weight:700; }
+.post-toc { max-height:calc(100dvh - var(--header-height) - 64px); overflow-y:auto; }
+.prose img { max-width:100%; height:auto; border-radius:12px; }
+@media(hover:none) { .article-row:hover { transform:none; } }
+@media(max-width:1000px) and (min-width:721px) { .hero-art { width:240px; height:240px; top:80px; } }
+@media(max-width:720px) {
+  .hero,.hero-content { min-height:410px; }
+  .hero-content { padding-block:44px 70px; }
+  .hero h1 { font-size:48px; }
+  .hero-links { flex-wrap:wrap; }
+  .hero-readout { font-size:10px; }
+  .latest-section,.projects-preview { padding-block:38px; }
+  .section-heading { gap:16px; align-items:center; }
+  .section-heading h2 { font-size:26px; }
+  .section-heading>.text-action { font-size:13px; white-space:nowrap; }
+  .article-row { grid-template-columns:minmax(0,1fr); padding:20px; }
+  .article-index { display:none; }
+  .primary-nav { height:auto; max-height:calc(100dvh - var(--header-height)); padding:8px 16px 16px; border-bottom:1px solid var(--line); box-shadow:0 16px 28px #0000000d; }
+  .primary-nav a { padding:12px; font-size:18px; border:0; border-radius:10px; }
+  .primary-nav a[aria-current="page"] { background:var(--surface); color:var(--signal); }
+  .post-header { padding-top:36px; }
+  .post-header h1 { font-size:30px; }
+  .post-toc { max-height:220px; }
+  .footer-links { gap:12px 20px; }
+  .footer-links a { padding-block:8px; }
+}

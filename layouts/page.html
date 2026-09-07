@@ -2,7 +2,7 @@
   <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
   <article class="post-page">
     <header class="post-header shell-narrow">
-      <a class="back-link" href="{{ "posts/" | relURL }}">{{ partial "icon.html" (dict "name" "arrow-left") }} 全部文章</a>
+      <a class="back-link" href="{{ "posts/" | relURL }}">{{ partial "icon.html" (dict "name" "arrow-left") }} 全部记录</a>
       <div class="post-meta">
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 年 01 月 02 日" }}</time>
         <span>{{ .ReadingTime }} 分钟阅读</span>
@@ -35,7 +35,7 @@
           {{ range .GetTerms "tags" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
         </div>
       </div>
-      <a class="text-action" href="{{ "posts/" | relURL }}">返回文章列表 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+      <a class="text-action" href="{{ "posts/" | relURL }}">返回记录列表 {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
     </footer>
   </article>
 {{ end }}
