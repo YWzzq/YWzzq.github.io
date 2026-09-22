@@ -63,6 +63,11 @@ summaryLength = 96
   pageRef = '/posts'
   weight = 20
 
+[[menus.main]]
+  name = '资源'
+  pageRef = '/resources'
+  weight = 25
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

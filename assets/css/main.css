@@ -1628,3 +1628,65 @@ button {
     gap: 16px;
   }
 }
+
+/* --- 16. Resources Library (/resources) --- */
+.resource-category-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.resource-category-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--signal-subtle);
+  color: var(--signal);
+}
+
+.resource-category-icon .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.resource-category-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-light);
+}
+
+.resource-kind {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: var(--surface-subtle);
+  color: var(--muted);
+  border: 1px solid var(--line-subtle);
+}
+
+.article-row h2 a .icon-inline,
+.article-row h3 a .icon-inline {
+  width: 15px;
+  height: 15px;
+  margin-left: 7px;
+  display: inline-block;
+  vertical-align: baseline;
+  color: var(--muted-light);
+  transition: color 0.15s ease;
+}
+
+.article-row h2 a:hover .icon-inline,
+.article-row h3 a:hover .icon-inline {
+  color: var(--signal);
+}
+
+.resource-link-btn {
+  margin: 20px 0 10px;
+}

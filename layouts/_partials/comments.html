@@ -1,5 +1,5 @@
 {{ $config := site.Params.twikoo }}
-{{ if and $config $config.enabled (eq .Section "posts") }}
+{{ if and $config $config.enabled (in (slice "posts" "resources") .Section) }}
   {{ $version := $config.version | default "1.7.15" }}
   {{ $script := $config.script | default "twikoo.min.js" }}
   {{ $scriptIntegrity := $config.scriptIntegrity | default "" }}

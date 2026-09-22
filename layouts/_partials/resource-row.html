@@ -1,0 +1,33 @@
+{{- /* 资源条目卡片：dict "page" 页面 "index" 序号 "level" 标题层级(2|3) */ -}}
+{{- $hasLink := gt (len (strings.TrimSpace (string .page.Params.link))) 0 -}}
+<article class="article-row resource-row">
+  <div class="article-index" aria-hidden="true">{{ printf "%02d" .index }}</div>
+  <div class="article-main">
+    <div class="article-meta">
+      {{- with .page.Date }}
+        {{- if ge .Year 2000 }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006.01.02" }}</time>{{ end }}
+      {{- end }}
+      {{- if $hasLink }}<span class="resource-kind">外部资源</span>{{ else }}<span class="resource-kind">站内笔记</span>{{ end }}
+    </div>
+    {{- if $hasLink }}
+      {{- if eq (.level | default 3) 2 }}
+        <h2><a href="{{ .page.Params.link }}" target="_blank" rel="noopener">{{ .page.LinkTitle }}{{ partial "icon.html" (dict "name" "external" "class" "icon-inline") }}</a></h2>
+      {{- else }}
+        <h3><a href="{{ .page.Params.link }}" target="_blank" rel="noopener">{{ .page.LinkTitle }}{{ partial "icon.html" (dict "name" "external" "class" "icon-inline") }}</a></h3>
+      {{- end }}
+    {{- else if eq (.level | default 3) 2 }}
+      <h2><a href="{{ .page.RelPermalink }}">{{ .page.LinkTitle }}</a></h2>
+    {{- else }}
+      <h3><a href="{{ .page.RelPermalink }}">{{ .page.LinkTitle }}</a></h3>
+    {{- end }}
+    <p>{{ .page.Description | default (.page.Summary | plainify | truncate 120) }}</p>
+    <nav class="tag-list" aria-label="资源标签">
+      {{- range first 3 (.page.GetTerms "tags") }}
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{- end }}
+    </nav>
+  </div>
+  <a class="article-arrow" href="{{ .page.RelPermalink }}" aria-label="查看《{{ .page.LinkTitle }}》详情">
+    {{ partial "icon.html" (dict "name" "arrow-right") }}
+  </a>
+</article>

@@ -1,11 +1,21 @@
 {{- $items := slice -}}
 {{- range site.RegularPages -}}
-  {{- if and (in (slice "posts" "projects") .Section) (not .Params.searchExclude) -}}
-    {{- $kind := cond (eq .Section "posts") "文章" "项目" -}}
+  {{- $section := .Section -}}
+  {{- if and (in (slice "posts" "projects" "resources") $section) (not .Params.searchExclude) -}}
+    {{- $kind := "项目" -}}
+    {{- if eq $section "posts" -}}
+      {{- $kind = "文章" -}}
+    {{- else if eq $section "resources" -}}
+      {{- $kind = "资源" -}}
+    {{- end -}}
+    {{- $date := "" -}}
+    {{- if ne $kind "项目" -}}
+      {{- $date = .Date.Format "2006-01-02" -}}
+    {{- end -}}
     {{- $items = $items | append (dict
       "title" .LinkTitle
       "url" .RelPermalink
-      "date" (cond (eq .Section "posts") (.Date.Format "2006-01-02") "")
+      "date" $date
       "summary" (.Description | default (.Summary | plainify))
       "content" (.Plain | htmlUnescape)
       "tags" (.Params.tags | default (slice))

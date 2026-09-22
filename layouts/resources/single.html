@@ -1,0 +1,47 @@
+{{ define "main" }}
+  <div class="reading-progress" data-reading-progress aria-hidden="true"></div>
+  <article class="post-page resource-page">
+    <header class="post-header shell-narrow">
+      <a class="back-link" href="{{ .Parent.RelPermalink }}">{{ partial "icon.html" (dict "name" "arrow-left") }} {{ .Parent.Title }}</a>
+      <div class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 年 01 月 02 日" }}</time>
+        {{ if .Params.link }}<span>外部资源</span>{{ else }}<span>{{ .ReadingTime }} 分钟阅读</span>{{ end }}
+      </div>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="post-deck">{{ . }}</p>{{ end }}
+      {{ with .Params.link }}
+        <a class="action-btn action-btn-primary resource-link-btn" href="{{ . }}" target="_blank" rel="noopener">
+          {{ partial "icon.html" (dict "name" "external") }}
+          <span>访问链接</span>
+        </a>
+      {{ end }}
+      <div class="tag-list post-tags">
+        {{ range .GetTerms "tags" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+      </div>
+    </header>
+
+    <div class="post-layout shell{{ if in .TableOfContents "<li>" }} has-toc{{ else }} no-toc{{ end }}">
+      <div class="prose" data-article-content>
+        {{ .Content }}
+      </div>
+      {{ if in .TableOfContents "<li>" }}
+        <aside class="post-toc" aria-label="文章目录">
+          <p>目录</p>
+          {{ .TableOfContents }}
+        </aside>
+      {{ end }}
+    </div>
+
+    {{ partial "comments.html" . }}
+
+    <footer class="post-footer shell-narrow">
+      <div>
+        <p class="section-kicker">归入主题</p>
+        <div class="tag-list">
+          {{ range .GetTerms "tags" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+        </div>
+      </div>
+      <a class="text-action" href="{{ .Parent.RelPermalink }}">返回{{ .Parent.Title }} {{ partial "icon.html" (dict "name" "arrow-right") }}</a>
+    </footer>
+  </article>
+{{ end }}
