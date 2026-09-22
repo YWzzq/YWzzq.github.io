@@ -4,7 +4,6 @@
     <header class="page-heading shell">
       <p class="section-kicker">Resources</p>
       <h1>{{ .Title }}</h1>
-      {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
     </header>
 
     <section class="resource-section shell" aria-label="资源目录">
@@ -18,7 +17,6 @@
             {{ partial "icon.html" (dict "name" "chevron-down" "class" "resource-chevron") }}
           </summary>
           <div class="resource-group-body">
-            {{ with $cat.Description }}<p class="resource-group-desc">{{ . }}</p>{{ end }}
             {{ if gt (len $cat.RegularPages) 0 }}
               {{ range $i, $page := $cat.RegularPages.ByDate.Reverse }}
                 {{ partial "resource-item.html" (dict "page" $page "index" (add $i 1)) }}
@@ -40,7 +38,6 @@
       <a class="back-link" href="{{ "resources/" | relURL }}">{{ partial "icon.html" (dict "name" "arrow-left") }} 资源库</a>
       <p class="section-kicker">Resources</p>
       <h1>{{ .Title }}</h1>
-      {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
     </header>
 
     <section class="listing-section shell">

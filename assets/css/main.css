@@ -1716,13 +1716,6 @@ details[open] > summary > .resource-chevron {
   padding: 2px 22px 18px;
 }
 
-.resource-group-desc {
-  font-size: 13.5px;
-  color: var(--muted);
-  margin: 0;
-  padding-bottom: 4px;
-}
-
 .resource-empty {
   font-size: 13.5px;
   color: var(--muted-light);
