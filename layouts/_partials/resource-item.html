@@ -1,0 +1,39 @@
+{{- /* 可折叠资源条目：dict "page" 页面 "index" 序号 */ -}}
+{{- $hasLink := gt (len (strings.TrimSpace (string .page.Params.link))) 0 -}}
+<details class="resource-item">
+  <summary>
+    <span class="resource-item-index" aria-hidden="true">{{ printf "%02d" .index }}</span>
+    <span class="resource-item-title">
+      {{- if $hasLink }}
+        <a href="{{ .page.Params.link }}" target="_blank" rel="noopener">{{ .page.LinkTitle }}{{ partial "icon.html" (dict "name" "external" "class" "icon-inline") }}</a>
+      {{- else }}
+        <a href="{{ .page.RelPermalink }}">{{ .page.LinkTitle }}</a>
+      {{- end }}
+    </span>
+    <span class="resource-item-meta">
+      {{- with .page.Date }}{{ if ge .Year 2000 }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006.01.02" }}</time>{{ end }}{{ end }}
+      <span class="resource-kind">{{ if $hasLink }}外部资源{{ else }}站内笔记{{ end }}</span>
+    </span>
+    {{ partial "icon.html" (dict "name" "chevron-down" "class" "resource-chevron") }}
+  </summary>
+  <div class="resource-item-body">
+    <p class="resource-item-desc">{{ .page.Description | default (.page.Summary | plainify | truncate 140) }}</p>
+    {{ with .page.GetTerms "tags" }}
+      <div class="tag-list resource-item-tags">
+        {{- range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+      </div>
+    {{ end }}
+    <div class="resource-item-actions">
+      {{ if $hasLink }}
+        <a class="action-btn action-btn-primary action-btn-sm" href="{{ .page.Params.link }}" target="_blank" rel="noopener">
+          {{ partial "icon.html" (dict "name" "external") }}
+          <span>访问链接</span>
+        </a>
+      {{ end }}
+      <a class="text-action" href="{{ .page.RelPermalink }}">
+        <span>查看详情</span>
+        {{ partial "icon.html" (dict "name" "arrow-right") }}
+      </a>
+    </div>
+  </div>
+</details>

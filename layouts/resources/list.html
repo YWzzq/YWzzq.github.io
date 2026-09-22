@@ -1,57 +1,39 @@
 {{ define "main" }}
   {{ if .Parent.IsHome }}
-    {{- /* 资源库首页：分类目录 + 最近收藏 */ -}}
+    {{- /* 资源库首页：可折叠分类目录 */ -}}
     <header class="page-heading shell">
       <p class="section-kicker">Resources</p>
       <h1>{{ .Title }}</h1>
       {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
     </header>
 
-    <section class="latest-section" aria-label="资源分类" style="padding-block: 8px 56px;">
-      <div class="shell">
-        <div class="project-preview-grid">
-          {{ range .Pages.ByWeight }}
-            {{ if .IsPage }}{{ continue }}{{ end }}
-            {{ $count := len .RegularPages }}
-            <article class="project-card resource-category-card">
-              <div>
-                <div class="resource-category-top">
-                  <span class="resource-category-icon" aria-hidden="true">{{ partial "icon.html" (dict "name" "folder") }}</span>
-                  <span class="resource-category-count">{{ $count }} 个条目</span>
-                </div>
-                <h2 class="project-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-                <p class="project-card-desc">{{ .Description | default "这个目录还在整理中。" }}</p>
-              </div>
-              <div class="project-card-footer">
-                <a class="project-card-link" href="{{ .RelPermalink }}" aria-label="浏览「{{ .Title }}」目录">
-                  <span>浏览目录</span>
-                  {{ partial "icon.html" (dict "name" "arrow-right") }}
-                </a>
-              </div>
-            </article>
-          {{ end }}
-        </div>
-      </div>
-    </section>
-
-    {{ $recent := where site.RegularPages "Section" "resources" }}
-    {{ if gt (len $recent) 0 }}
-      <section class="projects-preview" aria-labelledby="resource-recent-title">
-        <div class="shell">
-          <div class="section-heading">
-            <div>
-              <p class="section-kicker">Recently added</p>
-              <h2 id="resource-recent-title">最近收藏</h2>
-            </div>
-          </div>
-          <div class="article-list">
-            {{ range $index, $page := first 4 $recent.ByDate.Reverse }}
-              {{ partial "resource-row.html" (dict "page" $page "index" (add $index 1) "level" 3) }}
+    <section class="resource-section shell" aria-label="资源目录">
+      {{ range $index, $cat := .Pages.ByWeight }}
+        {{ if $cat.IsPage }}{{ continue }}{{ end }}
+        <details class="resource-group"{{ if eq $index 0 }} open{{ end }}>
+          <summary>
+            <span class="resource-group-icon" aria-hidden="true">{{ partial "icon.html" (dict "name" "folder") }}</span>
+            <h2 class="resource-group-title">{{ $cat.Title }}</h2>
+            <span class="resource-group-count">{{ len $cat.RegularPages }} 个条目</span>
+            {{ partial "icon.html" (dict "name" "chevron-down" "class" "resource-chevron") }}
+          </summary>
+          <div class="resource-group-body">
+            {{ with $cat.Description }}<p class="resource-group-desc">{{ . }}</p>{{ end }}
+            {{ if gt (len $cat.RegularPages) 0 }}
+              {{ range $i, $page := $cat.RegularPages.ByDate.Reverse }}
+                {{ partial "resource-item.html" (dict "page" $page "index" (add $i 1)) }}
+              {{ end }}
+            {{ else }}
+              <p class="resource-empty">这个目录还没有收录内容。</p>
             {{ end }}
+            <a class="resource-group-link" href="{{ $cat.RelPermalink }}">
+              <span>进入「{{ $cat.Title }}」目录</span>
+              {{ partial "icon.html" (dict "name" "arrow-right") }}
+            </a>
           </div>
-        </div>
-      </section>
-    {{ end }}
+        </details>
+      {{ end }}
+    </section>
   {{ else }}
     {{- /* 分类目录页 */ -}}
     <header class="page-heading shell">
@@ -68,9 +50,9 @@
           <a class="listing-tool-link" href="{{ "resources/" | relURL }}">全部分类</a>
         </nav>
         {{ $paginator := .Paginate .RegularPages.ByDate.Reverse }}
-        <div class="article-list">
+        <div class="resource-panel">
           {{ range $index, $page := $paginator.Pages }}
-            {{ partial "resource-row.html" (dict "page" $page "index" (add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (add $index 1)) "level" 2) }}
+            {{ partial "resource-item.html" (dict "page" $page "index" (add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (add $index 1))) }}
           {{ end }}
         </div>
         {{ partial "pagination.html" $paginator }}
